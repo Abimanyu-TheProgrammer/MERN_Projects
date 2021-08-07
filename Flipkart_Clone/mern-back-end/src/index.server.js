@@ -21,6 +21,7 @@ app.use('/api', require('./routes/admin/auth')) // admin routes
 app.use('/api', require('./routes/category')) // category routes
 app.use('/api', require('./routes/product')) // product routes
 app.use('/api', require('./routes/cart')) // cart routes 
+app.use('/api', require("./routes/admin/initialData")) // Initial Data route
 
 app.use((req, res) => {
     return res.status(404).json({

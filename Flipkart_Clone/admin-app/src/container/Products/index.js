@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layouts'
-import { Col, Container, Row, Modal, Button } from 'react-bootstrap';
+import { Col, Container, Row, Modal, Button, Table } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import {getAllCategories} from '../../actions'
+import { getAllCategories } from '../../actions'
 
 /**
 * @author
@@ -19,7 +19,8 @@ const Products = (props) => {
   const [description, setDescription] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [productPictures, setProductPictures] = useState([])
-
+  
+  const productState = useSelector(state => state.product)
   const categoryState = useSelector(state => state.category)
   const dispatch = useDispatch()
 
@@ -33,10 +34,10 @@ const Products = (props) => {
     setQuantity('')
     setDescription('')
     setCategoryId('')
-    setProductPictures([]) 
+    setProductPictures([])
     setShow(false);
   }
-  
+
   const handleShow = () => setShow(true);
 
   //Handle form submit
@@ -47,7 +48,6 @@ const Products = (props) => {
 
   //for the options in the modal
   const createCategoryList = (categories, options = []) => {
-
     for (let category of categories) {
       options.push({ value: category._id, name: category.name })
       if (category.children.length > 0)
@@ -65,7 +65,34 @@ const Products = (props) => {
   }
 
   const renderProducts = () => {
-    return null;
+    return (
+      <Table responsive="sm">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+            {
+              productState.products.length > 0 ? 
+              productState.products.map(product => 
+              <tr key = {product._id}>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.quantity}</td>
+                <td>{product.description}</td>
+                <td>{product.category}</td>
+              </tr>
+              ) : null
+            } 
+            
+        </tbody>
+      </Table>
+    );
   }
 
   return (
@@ -75,22 +102,20 @@ const Products = (props) => {
           <Col md={12}>
             <div style={{ "display": "flex", "justifyContent": "space-between" }}>
               <h3>Products</h3>
-              <button onClick={handleShow}>Add Category</button>
+              <button onClick={handleShow}>Add</button>
             </div>
           </Col>
         </Row>
         <Row>
           <Col md={12}>
-            <ul>
-
-            </ul>
+            {renderProducts()}
           </Col>
         </Row>
       </Container>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a New Category</Modal.Title>
+          <Modal.Title>Add a New Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Input
@@ -140,10 +165,10 @@ const Products = (props) => {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
-            </Button>
+          </Button>
           <Button variant="primary" onClick={handleSumbit}>
             Save Changes
-            </Button>
+          </Button>
         </Modal.Footer>
       </Modal>
     </Layout>

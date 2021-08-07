@@ -15,6 +15,7 @@ const initState = {
     error : null
 };
 
+// "action" parameter in the reducers are what we pass as an argument in the dispatch function
 const authReducer = (state = initState , action) => {
 
     console.log(action)

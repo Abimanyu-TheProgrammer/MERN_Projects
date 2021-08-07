@@ -10,6 +10,7 @@ import {isUserLoggedIn} from './actions/auth.actions'
 import Products from './container/Products';
 import Orders from './container/Orders';
 import Category from './container/Category';
+import { getInitialData } from './actions/initialData.actions';
 
 
 
@@ -24,6 +25,7 @@ function App() {
     if(!auth.authenticate){
       dispatch(isUserLoggedIn())
     }
+    dispatch(getInitialData())
   }, [])
 
   return (
